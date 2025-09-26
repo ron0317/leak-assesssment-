@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physis Revenue Hemorrhaging Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: #f0f0f0;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .hemorrhaging-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .leak-summary {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .priority-leaks {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .priority-leaks h4 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .leak-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border-left: 4px solid white;
+        }
+
+        .cta-section {
+            background: #2c3e50;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .cta-section h4 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .cta-btn {
+            background: #27ae60;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: #219a52;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🩺 Physis Revenue Hemorrhaging Assessment</h1>
+            <p>Discover exactly where your business is bleeding money</p>
+        </div>
+
+        <div class="content">
+            <form id="assessmentForm">
+                <!-- Section 1: Business Basics -->
+                <div class="section">
+                    <h3>🏢 Business Profile</h3>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Monthly Revenue</label>
+                        <select name="revenue">
+                            <option value="">Select range...</option>
+                            <option value="10000">$10K - $25K</option>
+                            <option value="37500">$25K - $50K</option>
+                            <option value="75000">$50K - $100K</option>
+                            <option value="150000">$100K - $200K</option>
+                            <option value="300000">$200K - $400K</option>
+                            <option value="500000">$400K+</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Team Size</label>
+                        <select name="teamSize">
+                            <option value="">Select size...</option>
+                            <option value="1">Just me</option>
+                            <option value="3">2-5 people</option>
+                            <option value="8">6-10 people</option>
+                            <option value="20">11-25 people</option>
+                            <option value="40">26-50 people</option>
+                            <option value="75">50+ people</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Industry</label>
+                        <select name="industry">
+                            <option value="">Select industry...</option>
+                            <option value="saas">B2B SaaS</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="agency">Digital Agency</option>
+                            <option value="consulting">Professional Services</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 2: Manual Task Cost Calculator -->
+                <div class="section">
+                    <h3>⏰ Manual Task Hemorrhaging</h3>
+                    <div class="input-group">
+                        <label>Hours per week spent on repetitive manual tasks</label>
+                        <input type="number" name="manualHours" placeholder="e.g., 15" min="0" max="80">
+                    </div>
+                    <div class="input-group">
+                        <label>Average hourly cost of people doing these tasks</label>
+                        <input type="number" name="hourlyCost" placeholder="e.g., 50" min="10" max="200">
+                    </div>
+                </div>
+
+                <!-- Section 3: Revenue Leak Diagnostic -->
+                <div class="section">
+                    <h3>🔍 Revenue Leak Scanner</h3>
+                    
+                    <div class="input-group">
+                        <label>How many leads contact you monthly that don't get followed up within 24 hours?</label>
+                        <select name="missedLeads">
+                            <option value="0">None - we follow up immediately</option>
+                            <option value="5">1-10 leads</option>
+                            <option value="15">11-20 leads</option>
+                            <option value="30">21-40 leads</option>
+                            <option value="50">40+ leads</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>How often do invoices get delayed or forgotten?</label>
+                        <select name="delayedInvoices">
+                            <option value="0">Never - automated system</option>
+                            <option value="1">Rarely (1-2 times per year)</option>
+                            <option value="5">Sometimes (monthly)</option>
+                            <option value="10">Often (weekly)</option>
+                            <option value="20">Constantly (daily concern)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>What percentage of your content gets repurposed across multiple channels?</label>
+                        <select name="contentWaste">
+                            <option value="0">90-100% (fully optimized)</option>
+                            <option value="25">70-89% (mostly optimized)</option>
+                            <option value="50">40-69% (some repurposing)</option>
+                            <option value="75">10-39% (minimal repurposing)</option>
+                            <option value="90">0-9% (single use only)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 4: Operational Gaps -->
+                <div class="section">
+                    <h3>⚠️ Critical Infrastructure Gaps</h3>
+                    <label>Check all that apply to your business:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gaps" value="crm">
+                            <label>Customer data scattered across multiple tools</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gaps" value="reporting">
+                            <label>Manual reporting that takes hours to compile</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gaps" value="followup">
+                            <label>Inconsistent follow-up sequences</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gaps" value="onboarding">
+                            <label>Manual client/customer onboarding process</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gaps" value="inventory">
+                            <label>Manual inventory or project tracking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gaps" value="social">
+                            <label>Social media posting done manually</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="calculate-btn">🩺 Diagnose My Revenue Hemorrhaging</button>
+            </form>
+
+            <div id="results" class="results">
+                <h3>🚨 CRITICAL DIAGNOSIS</h3>
+                <div class="hemorrhaging-score">$<span id="monthlyLoss">0</span>/mo</div>
+                <p><strong>Your business is hemorrhaging this amount monthly</strong></p>
+                
+                <div class="leak-summary">
+                    <p><strong>Annual Revenue at Risk:</strong> $<span id="annualLoss">0</span></p>
+                    <p><strong>Hemorrhaging Severity:</strong> <span id="severity">Unknown</span></p>
+                    <p><strong>Surgical Intervention Priority:</strong> <span id="priority">Assessment needed</span></p>
+                </div>
+
+                <div class="priority-leaks">
+                    <h4>🎯 Priority Surgical Targets</h4>
+                    <div id="leakList"></div>
+                </div>
+
+                <div class="cta-section">
+                    <h4>Stop the Hemorrhaging Now</h4>
+                    <p style="color: #bbb; margin-bottom: 15px;">Get a free Revenue Architecture Audit to create your surgical intervention plan</p>
+                    <a href="https://calendly.com/physisadvisoryconsult/30min" target="_blank" class="cta-btn">Book My Free Revenue Surgery Consultation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // REPLACE 'YOUR_APPS_SCRIPT_URL' with your actual Apps Script web app URL
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzW5RCyp1DUqpLfeyIwVW7dIhDe-3sEP-mHWf22d9Cl1bIR--y5brb2X-180ByJafs7uA/exec';
+
+        document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Get form data
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            // Calculate manual task cost
+            const manualHours = parseInt(data.manualHours) || 0;
+            const hourlyCost = parseInt(data.hourlyCost) || 50;
+            const manualTaskCost = manualHours * hourlyCost * 4.33; // monthly
+
+            // Calculate lead leak cost
+            const missedLeads = parseInt(data.missedLeads) || 0;
+            const avgLeadValue = parseInt(data.revenue) * 0.02 || 200; // 2% of monthly revenue as avg lead value
+            const leadLeakCost = missedLeads * avgLeadValue * 0.3; // 30% conversion loss
+
+            // Calculate invoice delay cost
+            const delayedInvoices = parseInt(data.delayedInvoices) || 0;
+            const invoiceDelayCost = delayedInvoices * 500; // $500 per delay in cash flow cost
+
+            // Calculate content waste cost
+            const contentWaste = parseInt(data.contentWaste) || 0;
+            const contentWasteCost = (contentWaste / 100) * (parseInt(data.revenue) * 0.1 || 1000); // 10% of revenue on content
+
+            // Calculate operational gaps cost
+            const gaps = data.gaps || [];
+            const gapCosts = Array.isArray(gaps) ? gaps.length * 800 : (gaps ? 800 : 0); // $800 per gap
+
+            // Total monthly hemorrhaging
+            const totalMonthlyLoss = manualTaskCost + leadLeakCost + invoiceDelayCost + contentWasteCost + gapCosts;
+            const annualLoss = totalMonthlyLoss * 12;
+
+            // Determine severity
+            let severity, priority;
+            if (totalMonthlyLoss < 2000) {
+                severity = "MODERATE";
+                priority = "Standard Timeline";
+            } else if (totalMonthlyLoss < 5000) {
+                severity = "HIGH";
+                priority = "Urgent Intervention";
+            } else {
+                severity = "CRITICAL";
+                priority = "Emergency Surgery Required";
+            }
+
+            // Send data to Google Sheets
+            const sheetData = {
+                email: data.email,
+                revenue: data.revenue,
+                teamSize: data.teamSize,
+                industry: data.industry,
+                manualHours: data.manualHours,
+                hourlyCost: data.hourlyCost,
+                missedLeads: data.missedLeads,
+                delayedInvoices: data.delayedInvoices,
+                contentWaste: data.contentWaste,
+                gaps: data.gaps,
+                monthlyLoss: Math.round(totalMonthlyLoss),
+                annualLoss: Math.round(annualLoss),
+                severity: severity,
+                priority: priority
+            };
+
+            // Send to Google Sheets
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sheetData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Data sent to sheet:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            // Generate priority leak list
+            const leaks = [];
+            if (manualTaskCost > 1000) leaks.push(`Manual Task Hemorrhaging: $${Math.round(manualTaskCost).toLocaleString()}/mo`);
+            if (leadLeakCost > 500) leaks.push(`Lead Follow-up Failure: $${Math.round(leadLeakCost).toLocaleString()}/mo`);
+            if (invoiceDelayCost > 200) leaks.push(`Invoice Process Bleeding: $${Math.round(invoiceDelayCost).toLocaleString()}/mo`);
+            if (contentWasteCost > 300) leaks.push(`Content Investment Waste: $${Math.round(contentWasteCost).toLocaleString()}/mo`);
+            if (gapCosts > 800) leaks.push(`Infrastructure Gap Costs: $${Math.round(gapCosts).toLocaleString()}/mo`);
+
+            // Update results
+            document.getElementById('monthlyLoss').textContent = Math.round(totalMonthlyLoss).toLocaleString();
+            document.getElementById('annualLoss').textContent = Math.round(annualLoss).toLocaleString();
+            document.getElementById('severity').textContent = severity;
+            document.getElementById('priority').textContent = priority;
+
+            const leakListElement = document.getElementById('leakList');
+            leakListElement.innerHTML = '';
+            leaks.forEach(leak => {
+                const div = document.createElement('div');
+                div.className = 'leak-item';
+                div.textContent = leak;
+                leakListElement.appendChild(div);
+            });
+
+            // Show results
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
